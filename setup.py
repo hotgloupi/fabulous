@@ -18,7 +18,7 @@ setup(
     long_description     = read('README.rst'),
     license              = 'MIT',
     install_requires     = [
-        'git+https://github.com/christian-oudard/Grapefruit.git',
+        'grapefruit',
         'Image',
     ],
     packages             = find_packages(),
@@ -35,5 +35,9 @@ setup(
         "Topic :: Artistic Software",
         "Topic :: System :: Logging",
         "Topic :: Multimedia :: Graphics"
+    ],
+
+    dependency_links = [
+        'git+https://github.com/christian-oudard/Grapefruit.git#grapefruit',
     ],
 )
