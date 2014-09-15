@@ -76,17 +76,17 @@ def lorem_gotham_title():
 def main(args):
     """I provide a command-line interface for this module
     """
-    print
-    print "-~*~--~*~--~*~--~*~--~*~--~*~--~*~--~*~--~*~--~*~-"
-    print lorem_gotham_title().center(50)
-    print "-~*~--~*~--~*~--~*~--~*~--~*~--~*~--~*~--~*~--~*~-"
-    print
+    print( )
+    print("-~*~--~*~--~*~--~*~--~*~--~*~--~*~--~*~--~*~--~*~-")
+    print(lorem_gotham_title().center(50))
+    print("-~*~--~*~--~*~--~*~--~*~--~*~--~*~--~*~--~*~--~*~-")
+    print()
     poem = lorem_gotham()
     for n in range(16):
         if n in (4, 8, 12):
-            print
-        print poem.next()
-    print
+            print()
+        print(poem.next())
+    print()
 
 
 if __name__ == '__main__':

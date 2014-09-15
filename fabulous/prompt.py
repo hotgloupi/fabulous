@@ -23,19 +23,19 @@ DEFAULT_INPUT_ERRORS = "Bad input (%s)"
 def input_object(prompt_text, cast = None, default = None,
                  prompt_ext = ': ', castarg = [], castkwarg = {}):
     """Gets input from the command line and validates it.
-    
+
     prompt_text
         A string. Used to prompt the user. Do not include a trailing
         space.
-        
+
     prompt_ext
         Added on to the prompt at the end. At the moment this must not
         include any control stuff because it is send directly to
         raw_input
-        
+
     cast
         This can be any callable object (class, function, type, etc). It
-        simply calls the cast with the given arguements and returns the 
+        simply calls the cast with the given arguements and returns the
         result. If a ValueError is raised, it
         will output an error message and prompt the user again.
 
@@ -43,13 +43,13 @@ def input_object(prompt_text, cast = None, default = None,
         that we might like you can easily write a wrapper function that
         looks and the input and returns the appropriate object or exception.
         Look in the cast submodule for examples.
-        
+
         If cast is None, then it will do nothing (and you will have a string)
-        
+
     default
         function returns this value if the user types nothing in. This is
         can be used to cancel the input so-to-speek
-        
+
     castarg, castkwarg
         list and dictionary. Extra arguments passed on to the cast.
     """
@@ -59,7 +59,7 @@ def input_object(prompt_text, cast = None, default = None,
         if value == '': return default
         try:
             if cast != None: value = cast(value, *castarg, **castkwarg)
-        except ValueError, details:
+        except ValueError as details:
             if cast in NICE_INPUT_ERRORS: # see comment above this constant
                 stderr.write(ERROR_MESSAGE % (NICE_INPUT_ERRORS[cast] % details))
             else: stderr.write(ERROR_MESSAGE % (DEFAULT_INPUT_ERRORS % str(details)))
@@ -68,26 +68,26 @@ def input_object(prompt_text, cast = None, default = None,
 
 def query(question, values, default=None, list_values = False, ignorecase = True ):
     """Preset a few options
-    
+
     The question argument is a string, nothing magical.
-    
+
     The values argument accepts input in two different forms. The simpler form
     (a tuple with strings) looks like:
-    
+
         .. code-block:: Python
-        
+
             ('Male','Female')
-    
+
     And it will pop up a question asking the user for a gender and requiring
     the user to enter either 'male' or 'female' (case doesn't matter unless
     you set the third arguement to false).
     The other form is something like:
-    
+
         .. code-block:: Python
-        
+
             ({'values':('Male','M'),'fg':'cyan'},
             {'values':('Female','F'),'fg':'magenta'})
-    
+
     This will pop up a question with Male/Female (each with appropriate
     colouring). Additionally, if the user types in just 'M', it will be
     treated as if 'Male' was typed in. The first item in the 'values' tuple
@@ -96,17 +96,17 @@ def query(question, values, default=None, list_values = False, ignorecase = True
     In addition the function can handle non-string objects quite fine. It
     simple displays the output object.__str__() and compares the user's input
     against that. So the the code
-    
+
         .. code-block:: Python
-        
+
             query("Python rocks? ",(True, False))
-    
+
     will return a bool (True) when the user types in the string 'True' (Of
     course there isn't any other reasonable answer than True anyways :P)
-    
+
     ``default`` is the value function returns if the user types nothing in. This is
     can be used to cancel the input so-to-speek
-    
+
     Using list_values = False will display a list, with descriptions printed out
     from the 'desc' keyword
     """
@@ -137,7 +137,7 @@ def query(question, values, default=None, list_values = False, ignorecase = True
 
 def query_cast(value, answers, ignorecase = False):
     """A cast function for query
-    
+
     Answers should look something like it does in query
     """
     if ignorecase: value = value.lower()
@@ -147,15 +147,15 @@ def query_cast(value, answers, ignorecase = False):
                 return item['values'][0]
             elif value == a:
                 return item['values'][0]
-    raise ValueError, "Response '%s' not understood, please try again." % value
+    raise ValueError("Response '%s' not understood, please try again." % value)
 
 def file_chooser(prompt_text = "Enter File: ", default=None, filearg=[], filekwarg={}):
     """A simple tool to get a file from the user. Takes keyworded arguemnts
     and passes them to open().
-    
+
     If the user enters nothing the function will return the ``default`` value.
     Otherwise it continues to prompt the user until it get's a decent response.
-    
+
     filekwarg may contain arguements passed on to ``open()``.
     """
     try:
@@ -174,7 +174,7 @@ def file_chooser(prompt_text = "Enter File: ", default=None, filearg=[], filekwa
             f = os.path.abspath(f)
         try:
             return open(f, *filearg, **filekwarg)
-        except IOError, e:
+        except IOError as e:
             stderr.write(ERROR_MESSAGE % ("unable to open %s : %s" % (f, e)))
 
 if __name__ == '__main__':

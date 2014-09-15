@@ -49,31 +49,31 @@ class ColorString(object):
         self.items = items
 
     def __str__(self):
-        return self.fmt % (self.sep.join([unicode(s) for s in self.items]))
+        return self.fmt % (self.sep.join([str(s) for s in self.items]))
 
     def __repr__(self):
-        return repr(unicode(self))
+        return repr(str(self))
 
     def __len__(self):
         return sum([len(item) for item in self.items])
 
     def __add__(self, cs):
-        if not isinstance(cs, (basestring, ColorString)):
+        if not isinstance(cs, (str, ColorString)):
             msg = "Concatenatation failed: %r + %r (Not a ColorString or str)"
             raise TypeError(msg % (type(cs), type(self)))
         return ColorString(self, cs)
 
     def __radd__(self, cs):
-        if not isinstance(cs, (basestring, ColorString)):
+        if not isinstance(cs, (str, ColorString)):
             msg = "Concatenatation failed: %r + %r (Not a ColorString or str)"
             raise TypeError(msg % (type(self), type(cs)))
         return ColorString(cs, self)
 
     @property
     def as_utf8(self):
-        """A more readable way to say ``unicode(color).encode('utf8')``
+        """A more readable way to say ``str(color).encode('utf8')``
         """
-        return unicode(self).encode('utf8')
+        return str(self).encode('utf8')
 
 
 class ColorString256(ColorString):
@@ -84,7 +84,7 @@ class ColorString256(ColorString):
 
     def __str__(self):
         return self.fmt % (
-            self.color, self.sep.join([unicode(s) for s in self.items]))
+            self.color, self.sep.join([str(s) for s in self.items]))
 
 
 class plain(ColorString):
@@ -189,13 +189,13 @@ class complement256(ColorString256):
     def __str__(self):
         return self.fmt % (
             self.fg, self.bg,
-            self.sep.join([unicode(s) for s in self.items]))
+            self.sep.join([str(s) for s in self.items]))
 
 
 def h1(title, line=OVERLINE):
     width = utils.term.width
-    print bold(title.center(width)).as_utf8
-    print bold((line * width)[:width]).as_utf8
+    print(bold(title.center(width)).as_utf8)
+    print(bold((line * width)[:width]).as_utf8)
 
 
 def parse_color(color):
@@ -213,7 +213,7 @@ def parse_color(color):
     >>> parse_color(grapefruit.Color((0.0, 1.0, 0.0)))
     (0, 255, 0)
     """
-    if isinstance(color, basestring):
+    if isinstance(color, str):
         color = grapefruit.Color.NewFromHtml(color)
     if isinstance(color, int):
         (r, g, b) = xterm256.xterm_to_rgb(color)
@@ -249,8 +249,8 @@ def section(title, bar=OVERLINE, strm=sys.stdout):
     """Helper function for testing demo routines
     """
     width = utils.term.width
-    print >>strm, bold(title.center(width)).as_utf8
-    print >>strm, bold((bar * width)[:width]).as_utf8
+    print(bold(title.center(width)), file = strm)
+    print(bold((bar * width)[:width]), file = strm)
 
 
 def main(args):
@@ -258,16 +258,16 @@ def main(args):
     """
     section("Fabulous 4-Bit Colors")
 
-    print ("style(...): " +
+    print(("style(...): " +
            bold("bold") +" "+
            underline("underline") +" "+
            flip("flip") +
            " (YMMV: " + italic("italic") +" "+
            underline2("underline2") +" "+
            strike("strike") +" "+
-           blink("blink") + ")\n").as_utf8
+           blink("blink") + ")\n").as_utf8)
 
-    print ("color(...)           " +
+    print(("color(...)           " +
            black("black") +" "+
            red("red") +" "+
            green("green") +" "+
@@ -275,9 +275,9 @@ def main(args):
            blue("blue") +" "+
            magenta("magenta") +" "+
            cyan("cyan") +" "+
-           white("white")).as_utf8
+           white("white")).as_utf8)
 
-    print ("bold(color(...))     " +
+    print(("bold(color(...))     " +
            bold(black("black") +" "+
                 red("red") +" "+
                 green("green") +" "+
@@ -285,16 +285,16 @@ def main(args):
                 blue("blue") +" "+
                 magenta("magenta") +" "+
                 cyan("cyan") +" "+
-                white("white"))).as_utf8
+                white("white"))).as_utf8)
 
-    print plain(
+    print(plain(
         'highlight_color(...) ',
         highlight_black('black'), ' ', highlight_red('red'), ' ',
         highlight_green('green'), ' ', highlight_yellow('yellow'), ' ',
         highlight_blue('blue'), ' ', highlight_magenta('magenta'), ' ',
-        highlight_cyan('cyan'), ' ', highlight_white('white')).as_utf8
+        highlight_cyan('cyan'), ' ', highlight_white('white')).as_utf8)
 
-    print ("bold(color_bg(...))  " +
+    print(("bold(color_bg(...))  " +
            bold(black_bg("black") +" "+
                 red_bg("red") +" "+
                 green_bg("green") +" "+
@@ -302,7 +302,7 @@ def main(args):
                 blue_bg("blue") +" "+
                 magenta_bg("magenta") +" "+
                 cyan_bg("cyan") +" "+
-                white_bg("white"))).as_utf8
+                white_bg("white"))).as_utf8)
 
     section("Fabulous 8-Bit Colors")
 
@@ -315,19 +315,19 @@ def main(args):
                  "highlight256('indigo', ' lorem ipsum ')",
                  "highlight256('orange', ' lorem ipsum ')",
                  "highlight256('orangered', ' lorem ipsum ')"]:
-        print "%-42s %s" % (code, eval(code))
-    print ''
+        print("%-42s %s" % (code, eval(code)))
+    print()
 
     # grayscales
     line = " "
     for xc in range(232, 256):
         line += bg256(xc, '  ')
-    print line
+    print(line)
     line = " "
     for xc in range(232, 256)[::-1]:
         line += bg256(xc, '  ')
-    print line
-    print ''
+    print(line)
+    print()
 
     cube_color = lambda x,y,z: 16 + x + y*6 + z*6*6
     for y in range(6):
@@ -336,5 +336,5 @@ def main(args):
             for x in range(6):
                 line += bg256(cube_color(x, y, z), '  ')
             line += " "
-        print line.as_utf8
+        print(line.as_utf8)
 

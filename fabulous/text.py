@@ -246,7 +246,7 @@ def main(args):
                         font=options.font, fsize=options.fsize,
                         shadow=options.shadow)
         for chunk in fab_text:
-            print chunk
+            print(chunk)
 
 
 if __name__ == '__main__':

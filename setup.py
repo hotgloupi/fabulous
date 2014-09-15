@@ -1,11 +1,3 @@
-# http://packages.python.org/distribute/setuptools.html
-# http://diveintopython3.org/packaging.html
-# http://wiki.python.org/moin/CheeseShopTutorial
-# http://pypi.python.org/pypi?:action=list_classifiers
-
-from ez_setup import use_setuptools
-use_setuptools(version='0.6c11')
-
 import os
 from setuptools import setup, find_packages
 
@@ -23,9 +15,12 @@ setup(
     description          = 'Makes your terminal output totally fabulous',
     download_url         = ('http://lobstertech.com/media/file/fabulous/'
                             'fabulous-' + version + '.tar.gz'),
-    long_description     = read('README'),
+    long_description     = read('README.rst'),
     license              = 'MIT',
-    install_requires     = ['grapefruit'],
+    install_requires     = [
+        'git+https://github.com/christian-oudard/Grapefruit.git',
+        'Image',
+    ],
     packages             = find_packages(),
     zip_safe             = False,
     include_package_data = True,
