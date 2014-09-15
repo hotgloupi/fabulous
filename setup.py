@@ -38,6 +38,6 @@ setup(
     ],
 
     dependency_links = [
-        'git+https://github.com/christian-oudard/Grapefruit.git#grapefruit',
+        'https://github.com/christian-oudard/Grapefruit/archive/master.zip#grapefruit',
     ],
 )
