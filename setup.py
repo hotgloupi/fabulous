@@ -18,7 +18,7 @@ setup(
     long_description     = read('README.rst'),
     license              = 'MIT',
     install_requires     = [
-        'grapefruit',
+        #'grapefruit',
         'Image',
     ],
     packages             = find_packages(),
@@ -38,6 +38,9 @@ setup(
     ],
 
     dependency_links = [
-        'https://github.com/christian-oudard/Grapefruit/archive/master.zip#grapefruit',
+        #'https://github.com/christian-oudard/Grapefruit/archive/master.zip#grapefruit',
     ],
 )
+
+# SETUPTOOLS MAKES ME CRAZY, JUST DO
+# pip install git+https://github.com/christian-oudard/Grapefruit -U
