@@ -22,7 +22,7 @@ def esc(*codes):
     return "\x1b[%sm" % (";".join([str(c) for c in codes]))
 
 
-class ColorString(object):
+class ColorString:
     r"""A colorized string-like object that gives correct length
 
     If anyone knows a way to be able to make this behave like a string
@@ -57,6 +57,12 @@ class ColorString(object):
     def __len__(self):
         return sum([len(item) for item in self.items])
 
+    def expandtabs(self, tabsize):
+        return self.__class__(*( item.expandtabs(tabsize) for item in self.items))
+
+    def translate(self, map):
+        return self.__class__(*(item.translate(map) for item in self.items))
+
     def __add__(self, cs):
         if not isinstance(cs, (str, ColorString)):
             msg = "Concatenatation failed: %r + %r (Not a ColorString or str)"
@@ -68,12 +74,6 @@ class ColorString(object):
             msg = "Concatenatation failed: %r + %r (Not a ColorString or str)"
             raise TypeError(msg % (type(self), type(cs)))
         return ColorString(cs, self)
-
-    @property
-    def as_utf8(self):
-        """A more readable way to say ``str(color).encode('utf8')``
-        """
-        return str(self).encode('utf8')
 
 
 class ColorString256(ColorString):
@@ -98,8 +98,20 @@ class plain(ColorString):
 
 class bold(ColorString):
     fmt = esc(1) + "%s" + esc(22)
+
+def start_bold():
+    return esc(1)
+def end_bold():
+    return esc(22)
+
 class italic(ColorString):
     fmt = esc(3) + "%s" + esc(23)
+
+def start_italic():
+    return esc(3)
+def end_italic():
+    return esc(23)
+
 class underline(ColorString):
     fmt = esc(4) + "%s" + esc(24)
 class underline2(ColorString):
@@ -169,6 +181,11 @@ class white_bg(ColorString):
 class fg256(ColorString256):
     fmt = esc(38, 5, "%d") + "%s" + esc(39)
 
+def fg_start(color):
+        return esc(38, 5, xterm256.rgb_to_xterm(*parse_color(color)))
+
+def fg_end():
+    return esc(39)
 
 class bg256(ColorString256):
     fmt = esc(48, 5, "%d") + "%s" + esc(49)
